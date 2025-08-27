@@ -14,7 +14,99 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      folders: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      note_folders: {
+        Row: {
+          created_at: string
+          folder_id: string
+          id: string
+          note_id: string
+        }
+        Insert: {
+          created_at?: string
+          folder_id: string
+          id?: string
+          note_id: string
+        }
+        Update: {
+          created_at?: string
+          folder_id?: string
+          id?: string
+          note_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "note_folders_folder_id_fkey"
+            columns: ["folder_id"]
+            isOneToOne: false
+            referencedRelation: "folders"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "note_folders_note_id_fkey"
+            columns: ["note_id"]
+            isOneToOne: false
+            referencedRelation: "notes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      notes: {
+        Row: {
+          content: string | null
+          created_at: string
+          id: string
+          is_favorite: boolean | null
+          tags: string[] | null
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          content?: string | null
+          created_at?: string
+          id?: string
+          is_favorite?: boolean | null
+          tags?: string[] | null
+          title?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          content?: string | null
+          created_at?: string
+          id?: string
+          is_favorite?: boolean | null
+          tags?: string[] | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

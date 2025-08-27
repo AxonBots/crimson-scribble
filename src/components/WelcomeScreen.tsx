@@ -1,68 +1,74 @@
-import { FileText, Folder, Upload, File, Star, Clock } from "lucide-react";
+import { FileText, FileIcon, Upload, FolderPlus, Sparkles, Clock, Users, Zap } from "lucide-react";
 import { Button } from "./ui/button";
 
-export function WelcomeScreen() {
-  const quickActions = [
-    {
-      icon: FileText,
-      title: "Create New Note",
-      description: "Start with a blank note",
-      action: "new-note",
-      color: "bg-primary/10 text-primary"
-    },
-    {
-      icon: File,
-      title: "Use Template",
-      description: "Choose from pre-made templates",
-      action: "template",
-      color: "bg-success/10 text-success"
-    },
-    {
-      icon: Upload,
-      title: "Import Notes",
-      description: "Import from other apps",
-      action: "import",
-      color: "bg-warning/10 text-warning"
-    },
-    {
-      icon: Folder,
-      title: "Create Folder",
-      description: "Organize your workspace",
-      action: "folder",
-      color: "bg-accent-foreground/10 text-accent-foreground"
-    }
-  ];
+interface WelcomeScreenProps {
+  onCreateNote: () => void;
+}
 
-  const recentTemplates = [
-    {
-      name: "Meeting Notes",
-      description: "Structured template for meetings",
-      category: "Business"
-    },
-    {
-      name: "Project Plan",
-      description: "Comprehensive project planning",
-      category: "Planning"
-    },
-    {
-      name: "Daily Journal",
-      description: "Personal reflection template",
-      category: "Personal"
-    },
-    {
-      name: "Research Notes",
-      description: "Academic research structure",
-      category: "Academic"
-    }
-  ];
+// Quick actions data
+const quickActions = [
+  {
+    icon: FileText,
+    title: "Create New Note",
+    description: "Start with a blank note",
+    action: "create",
+    bgColor: "bg-gradient-to-br from-primary to-primary-dark"
+  },
+  {
+    icon: FileIcon,
+    title: "Use Template", 
+    description: "Choose from pre-made templates",
+    action: "template",
+    bgColor: "bg-gradient-to-br from-success to-success/80"
+  },
+  {
+    icon: Upload,
+    title: "Import Notes",
+    description: "Import from other apps", 
+    action: "import",
+    bgColor: "bg-gradient-to-br from-warning to-warning/80"
+  },
+  {
+    icon: FolderPlus,
+    title: "Create Folder",
+    description: "Organize your workspace",
+    action: "folder", 
+    bgColor: "bg-gradient-to-br from-secondary-dark to-muted-foreground"
+  }
+];
 
+// Recent templates data
+const recentTemplates = [
+  {
+    name: "Meeting Notes",
+    description: "Structured template for meetings",
+    category: "Business"
+  },
+  {
+    name: "Project Plan", 
+    description: "Comprehensive project planning",
+    category: "Planning"
+  },
+  {
+    name: "Daily Journal",
+    description: "Personal reflection template", 
+    category: "Personal"
+  },
+  {
+    name: "Research Notes",
+    description: "Academic research structure",
+    category: "Academic"
+  }
+];
+
+export function WelcomeScreen({ onCreateNote }: WelcomeScreenProps) {
   return (
-    <div className="flex-1 bg-gradient-to-br from-background to-accent">
+    <div className="flex-1 bg-gradient-to-br from-background to-accent overflow-y-auto">
       <div className="max-w-6xl mx-auto px-8 py-16">
         {/* Hero Section */}
         <div className="text-center mb-16 animate-fade-in">
           <div className="w-20 h-20 bg-gradient-to-br from-primary to-primary-dark rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-crimson">
-            <FileText className="w-10 h-10 text-primary-foreground" />
+            <Sparkles className="w-10 h-10 text-primary-foreground" />
           </div>
           <h1 className="text-5xl font-bold text-foreground mb-4">
             Welcome to <span className="text-primary">MiNote</span>
@@ -72,7 +78,10 @@ export function WelcomeScreen() {
             Create, organize, and collaborate with powerful tools.
           </p>
           <div className="flex items-center justify-center space-x-4">
-            <Button className="btn-primary text-lg px-8 py-3 h-auto animate-scale-in">
+            <Button 
+              className="btn-primary text-lg px-8 py-3 h-auto animate-scale-in"
+              onClick={onCreateNote}
+            >
               <FileText className="w-5 h-5 mr-2" />
               Create Your First Note
             </Button>
@@ -86,22 +95,22 @@ export function WelcomeScreen() {
         <div className="mb-16">
           <h2 className="text-2xl font-semibold text-foreground mb-6">Quick Actions</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {quickActions.map((action, index) => {
-              const Icon = action.icon;
-              return (
-                <div
-                  key={action.action}
-                  className="card-elegant hover-lift cursor-pointer animate-slide-up"
-                  style={{ animationDelay: `${index * 100}ms` }}
-                >
-                  <div className={`w-12 h-12 rounded-xl ${action.color} flex items-center justify-center mb-4`}>
-                    <Icon className="w-6 h-6" />
-                  </div>
-                  <h3 className="font-semibold text-foreground mb-2">{action.title}</h3>
+            {quickActions.map((action, index) => (
+              <Button
+                key={action.action}
+                variant="outline"
+                className="card-elegant h-auto p-6 text-left flex-col items-start space-y-3 hover-lift"
+                onClick={action.action === 'create' ? onCreateNote : undefined}
+              >
+                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${action.bgColor}`}>
+                  <action.icon className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-foreground mb-1">{action.title}</h3>
                   <p className="text-sm text-muted-foreground">{action.description}</p>
                 </div>
-              );
-            })}
+              </Button>
+            ))}
           </div>
         </div>
 
@@ -121,7 +130,7 @@ export function WelcomeScreen() {
               </div>
               <div className="flex items-start space-x-4">
                 <div className="w-8 h-8 bg-success/10 text-success rounded-lg flex items-center justify-center flex-shrink-0">
-                  <Folder className="w-4 h-4" />
+                  <FolderPlus className="w-4 h-4" />
                 </div>
                 <div>
                   <h3 className="font-medium text-foreground mb-1">Smart Organization</h3>
@@ -130,7 +139,7 @@ export function WelcomeScreen() {
               </div>
               <div className="flex items-start space-x-4">
                 <div className="w-8 h-8 bg-warning/10 text-warning rounded-lg flex items-center justify-center flex-shrink-0">
-                  <Star className="w-4 h-4" />
+                  <Users className="w-4 h-4" />
                 </div>
                 <div>
                   <h3 className="font-medium text-foreground mb-1">Collaboration</h3>

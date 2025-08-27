@@ -1,8 +1,17 @@
-import { Search, Settings, Share2, Download, User } from "lucide-react";
+import { Search, Settings, Share2, Download, User, LogOut } from "lucide-react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
+import { useAuth } from "@/hooks/useAuth";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export function Header() {
+  const { user, signOut } = useAuth();
   return (
     <header className="h-16 border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-50">
       <div className="flex items-center justify-between h-full px-6">
@@ -39,9 +48,28 @@ export function Header() {
           <Button variant="ghost" size="sm" className="btn-ghost">
             <Settings className="w-4 h-4" />
           </Button>
-          <Button variant="ghost" size="sm" className="btn-ghost rounded-full p-2">
-            <User className="w-4 h-4" />
-          </Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="sm" className="btn-ghost rounded-full p-2">
+                <User className="w-4 h-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-56">
+              <div className="px-2 py-1.5 text-sm font-medium">
+                {user?.email}
+              </div>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>
+                <Settings className="w-4 h-4 mr-2" />
+                Settings
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={signOut} className="text-destructive">
+                <LogOut className="w-4 h-4 mr-2" />
+                Sign Out
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </div>
     </header>

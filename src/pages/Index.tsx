@@ -1,11 +1,22 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useState } from "react";
+import { Header } from "@/components/Header";
+import { Sidebar } from "@/components/Sidebar";
+import { Editor } from "@/components/Editor";
+import { WelcomeScreen } from "@/components/WelcomeScreen";
 
 const Index = () => {
+  const [currentView, setCurrentView] = useState<'welcome' | 'editor'>('welcome');
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
+    <div className="min-h-screen bg-background">
+      <Header />
+      <div className="flex h-[calc(100vh-4rem)]">
+        <Sidebar />
+        {currentView === 'welcome' ? (
+          <WelcomeScreen />
+        ) : (
+          <Editor />
+        )}
       </div>
     </div>
   );
